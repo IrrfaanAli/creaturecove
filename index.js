@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
    
-  // await client.connect();
+  //await client.connect();
 
 
    const toyCollection = client.db("animalToys").collection("toys");
@@ -54,17 +54,27 @@ async function run() {
           res.send(result)
         })
 
+      
+
         app.get('/mytoys',async(req,res) =>{
 
            let query = {};
+           let sort = {};
 
            if(req.query?.sellerEmail){
              query = {sellerEmail : req.query.sellerEmail};
              
            }
-            const sort ={price: 1}
-          // const result = await toyCollection.find().sort(sort).collation({locale: "en_US", numericOrdering: true}).toArray()
-           const  result = (await toyCollection.find(query).toArray());
+           if(req.query?.sort === 1){
+             sort = {price :req.query.sort};
+             
+           }
+           if(parseInt(req.query?.sort) === -1){
+             sort = {price : - req.query.sort};
+             console.log(req.query.sort)
+           }
+
+           const  result = (await toyCollection.find(query).sort(sort).toArray());
            res.send(result);
         })
 
