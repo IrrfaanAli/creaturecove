@@ -65,14 +65,15 @@ async function run() {
              query = {sellerEmail : req.query.sellerEmail};
              
            }
-           if(req.query?.sort === 1){
-             sort = {price :req.query.sort};
-             
-           }
-           if(parseInt(req.query?.sort) === -1){
-             sort = {price : - req.query.sort};
+           if(parseInt(req.query?.sort) === 1){
+             sort = {price : 1};
              console.log(req.query.sort)
            }
+           if(parseInt(req.query?.sort) === -1){
+             sort = {price : - 1};
+             console.log(req.query.sort)
+           }
+          
 
            const  result = (await toyCollection.find(query).sort(sort).toArray());
            res.send(result);
